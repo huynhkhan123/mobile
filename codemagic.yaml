@@ -1,0 +1,42 @@
+workflows:
+  ios-release:
+    name: "iOS Release Build"
+    max_build_duration: 120
+    environment:
+      vars:
+        XCODE_WORKSPACE: "Runner.xcworkspace" # Update with your actual workspace name
+        XCODE_SCHEME: "Runner" # Update with your actual scheme name
+      xcode: latest # Specify the Xcode version
+      cocoapods: "default" # Use the default cocoapods version
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: "main"
+          include: true
+          source: true
+
+    scripts:
+    - name: "Install dependencies"
+      script: |
+        flutter pub get
+    - name: "Install CocoaPods"
+      script: |
+        cd ios
+        pod install
+        cd ..
+    - name: "Run tests"
+      script: |
+        flutter test
+    - name: "Build iOS release"
+      script: |
+        flutter build ios --release --no-codesign
+
+    artifacts:
+      - build/ios/ipa/*.ipa # This will collect the .ipa file from the specified path
+
+    publishing:
+      email:
+        recipients:
+          - huynhkhan91@gmail.com # Specify your email here
