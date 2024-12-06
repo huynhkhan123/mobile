@@ -1,110 +1,125 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_app/models/destination_model.dart';
 import 'package:mobile_app/utils/app_colors.dart';
-import 'package:mobile_app/widgets/custom_menu_icon.dart';
+import 'package:mobile_app/widgets/destination_widget.dart'; // Ensure this import is correct
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+   HomePage({super.key});
+
+  // Example list of destinations
+  final List<DestinationModel> destinations = [
+    DestinationModel(id: '1', name: 'Korea', image: 'assets/places/place1.jpg'),
+    DestinationModel(id: '2', name: 'Japan', image: 'assets/places/place2.jpg'),
+    DestinationModel(id: '3', name: 'China', image: 'assets/places/place3.jpg'),
+  ];
+
+  
 
   @override
   Widget build(BuildContext context) {
+    print(destinations.length);
     return Scaffold(
       appBar: AppBar(
-        
         leading: IconButton(
-          icon: Image.asset('assets/icons/menu.png', width: 30,), // Assuming you have changed the .ico to .png as it is more compatible
+          icon: Image.asset('assets/icons/menu.png', width: 30),
           onPressed: () {},
+        ),
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Try "Hawaii"',
+            contentPadding: EdgeInsets.symmetric(vertical: 10),
+            prefixIcon: Icon(Icons.search, color: Colors.grey),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+          ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person, color: Colors.grey),
             onPressed: () {},
-          )
+          ),
         ],
-        title: Text('Hello Aldito'),
         backgroundColor: Colors.white,
         elevation: 0,
-        
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 20), // Adjusted padding as per your request
-          child: Column(
+      body: ListView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(14),
+        children: [
+          Text(
+            "Destinations",
+            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+          DestinationWidget(destinations: destinations), // Use the DestinationWidget here
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Try "Hawaii"',
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    
+              Text(
+                "Feature tours",
+                style: GoogleFonts.poppins(
+                    fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "See all",
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.headingColor,
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    DestinationCard('place1'),
-                    DestinationCard('place2'),
-                    DestinationCard('place3'),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                      ),
-                      child: Image.asset('assets/places/place1.jpg', fit: BoxFit.cover),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('The beauty of Dreamland beach is almost similar to Bali\'s Balangan beach and Jimbaran\'s Tegal Wangi beach. Check it out!'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Explore'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                      ),
-                    )
-                  ],
-                ),
-              )
             ],
           ),
-        ),
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Host tours",
+                style: GoogleFonts.poppins(
+                    fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "See all",
+                  style: GoogleFonts.poppins(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.headingColor,
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home, size: 30),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search, size: 30),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications, size: 30),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle, size: 30),
+              label: ''),
         ],
-      ),
-    );
-  }
-
-  Widget DestinationCard(String name) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset('assets/places/$name.jpg', width: 100, height: 100, fit: BoxFit.cover),
-          ),
-          Text(name),
-        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: AppColors.headingColor,
       ),
     );
   }
